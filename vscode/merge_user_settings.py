@@ -45,14 +45,20 @@ def load_json(path, default):
     return json.loads(text)
 
 
-def flatten_extensions(grouped):
+def flatten_extensions(data):
     ids = []
     seen = set()
-    for key in ("common", "python"):
-        for ext in grouped.get(key, []):
-            if ext not in seen:
-                seen.add(ext)
-                ids.append(ext)
+    if isinstance(data, list):
+        seq = data
+    else:
+        seq = list(data.get("extensions") or [])
+        if not seq:
+            for key in ("common", "python"):
+                seq.extend(data.get(key) or [])
+    for ext in seq:
+        if ext not in seen:
+            seen.add(ext)
+            ids.append(ext)
     return ids
 
 

@@ -1,15 +1,15 @@
 {
-  "common": [
-    "editorconfig.editorconfig",
-    "tamasfe.even-better-toml",
-    "redhat.vscode-yaml",
-    "esbenp.prettier-vscode",
-    "ms-azuretools.vscode-docker"
-  ],
-  "python": [
+  "extensions": [
     "ms-python.python",
     "ms-python.vscode-pylance",
-    "ms-python.debugpy",
-    "charliermarsh.ruff"
+    "ms-python.black-formatter",
+    "ms-python.isort",
+    "ms-python.flake8",
+    "redhat.vscode-yaml",
+    "ms-azuretools.vscode-docker",
+    "tamasfe.even-better-toml",
+    "talktokim.taskexpl",
+    "PawelHuryn.grok-vscode-phuryn",
+    "jbockle.jbockle-format-files"
   ]
 }

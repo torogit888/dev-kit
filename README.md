@@ -1,25 +1,13 @@
 # dev-kit
 
-個人常用的開發 bootstrap：Grok 全域規則、VS Code Dev Container 預設 extension。
-新機器 clone 一次、跑 `install.sh`，之後每個新專案不必再抄同一套設定。
+個人常用的開發 bootstrap：Grok 全域規則、VS Code / Dev Container 預設 extension 與 Python 編輯設定。
+新機器 clone 一次、跑 `install.sh`，之後每個新專案不必再抄同一套。
 
-## 怎麼拆比較好
+## 新機器、新容器、新專案分別做什麼
 
-不要把「我個人習慣」寫進每一個專案的 `.devcontainer/devcontainer.json`。那會漂移，而且跟同事的環境綁在一起。
+### 1. 新機器（Windows / WSL / 另一台電腦）— 只做一次
 
-| 層 | 放哪 | 誰會帶到 |
-|----|------|----------|
-| **你的習慣**（幾乎每個容器都要的 extension、format on save） | 這份 repo → 寫進 VS Code **User** `settings.json` 的 `dev.containers.defaultExtensions` | 你開的每一個 Dev Container，自動裝 |
-| **這個專案才需要的**（映像、port、compose、該語言的 interpreter path） | 該專案 `.devcontainer/devcontainer.json` | 只這個 repo |
-| **給沒裝 dev-kit 的人**（同事、Codespaces） | 可選：把 [`devcontainer/fragment.json`](devcontainer/fragment.json) 貼進專案 | 打開該專案的人 |
-
-編輯器設定（format on save、去行尾空白）本身會跟著 User settings 進容器。真正不會自動跟進去的是 **extension**：主機裝過 Python，容器裡還是空的。所以用 `dev.containers.defaultExtensions`，不要靠每個專案列一份。
-
-專案檔請保持薄，像 [`templates/python-devcontainer.json`](templates/python-devcontainer.json)：只寫 image / port / 該專案的 interpreter。不要再複製一整串 extension。
-
-## 新環境
-
-Git Bash / WSL / macOS / Linux：
+主機要先有 VS Code 和 **Dev Containers** 擴充功能（`ms-vscode-remote.remote-containers`，裝在主機，不要裝進容器）。
 
 ```bash
 git clone https://github.com/<YOU>/dev-kit.git
@@ -27,50 +15,73 @@ cd dev-kit
 bash install.sh
 ```
 
-Windows PowerShell 可呼叫 Git 自帶的 bash：
+Windows PowerShell：
 
 ```powershell
 & "C:\Program Files\Git\bin\bash.exe" .\install.sh
 ```
 
-`install.sh` 會：
+這會寫入：
 
-1. 把 [`grok/rules/guidance-only.md`](grok/rules/guidance-only.md) 寫到 `~/.grok/rules/guidance-only.md`
-2. 把 [`devcontainer/extensions.json`](devcontainer/extensions.json) **合併**進 VS Code User settings（已有的 key 不覆蓋；extension 做聯集）
+| 寫到哪 | 內容 |
+|--------|------|
+| `~/.grok/rules/guidance-only.md` | Grok 全域規則 |
+| VS Code **User** `settings.json` | `dev.containers.defaultExtensions` + Black / isort / flake8 / pytest 等 |
 
-改完 User settings 後，**新開**的 Dev Container 才會裝到這些 extension。已在跑的容器：Command Palette → `Dev Containers: Rebuild Container`。
+之後這台電腦開任何 Dev Container，VS Code 都會自動把這份 extension 清單裝進容器。編輯器設定（format on save、line length 120）跟著 User settings 進容器。
 
-Grok 規則：重開 session，或 `grok inspect` 確認有載入 `guidance-only.md`。
+### 2. 新容器 — 不必在容器裡再跑 install
 
-可選：clone 進某個專案的 `docs/`：
+不要進容器再 clone / 再跑 `install.sh`。流程是：
 
-```bash
-git clone https://github.com/<YOU>/dev-kit.git docs/dev-kit
-bash docs/dev-kit/install.sh
+1. 主機已經跑過上面的 `install.sh`
+2. 用 VS Code 打開專案 → Command Palette → **Dev Containers: Reopen in Container**
+3. 容器建好後，VS Code 依 User 裡的 `dev.containers.defaultExtensions` 安裝 extension
+
+已在跑的舊容器看不到新清單：再跑一次 **Dev Containers: Rebuild Container**。
+
+容器裡的專案 `.devcontainer/devcontainer.json` **不必**再列那 11 個 extension。只留這個專案才有的東西（compose、port、interpreter）：
+
+```json
+{
+  "name": "python-app",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "pipeline",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      }
+    }
+  }
+}
 ```
 
-## 目前的 task
+完整薄範本：[`templates/python-devcontainer.json`](templates/python-devcontainer.json)。
 
-| Task | 怎麼跑 | 寫到哪 |
-|------|--------|--------|
-| Grok：不要擅自跑編譯 / Docker / 測試 | `grok/setup_grok_rules.sh` | `~/.grok/rules/guidance-only.md` |
-| Dev Container 常用 extension | `vscode/merge_user_settings.py` | VS Code User `dev.containers.defaultExtensions` |
+### 3. 新專案
 
-清單來源：[`devcontainer/extensions.json`](devcontainer/extensions.json)（`common` + `python`）。要加減就改那個檔，再跑一次 `install.sh`。
+1. 加一個薄的 `.devcontainer/devcontainer.json`（映像 / compose / port / interpreter）
+2. 不要複製 extension 清單
+3. Reopen in Container
 
-預設會裝：
+只有 **沒裝 dev-kit 的人**（同事、Codespaces）才需要把 [`devcontainer/fragment.json`](devcontainer/fragment.json) 貼進該專案的 `customizations.vscode`。
 
-- EditorConfig、Even Better TOML、YAML、Prettier、Docker
-- Python、Pylance、debugpy、Ruff
+## 這份清單
 
-不裝 GitLens、遠端套件（`Remote - Containers` 是主機用的，不要塞進容器）。
+來源：[`devcontainer/extensions.json`](devcontainer/extensions.json) 與 [`devcontainer/common-settings.json`](devcontainer/common-settings.json)。要改就改這兩個檔，再跑一次 `install.sh`。
+
+- Python、Pylance、Black、isort、flake8
+- YAML、Docker、Even Better TOML
+- taskexpl、Grok、Format Files
+
+Python：pytest、Black / isort line length 120、flake8 max 120、存檔時 format + organize imports。
+
+`python.linting.*` 是舊鍵，仍寫入以相容；flake8 擴充功能實際讀的是 `flake8.args`。
 
 ## 之後怎麼加 task
 
 1. 可重複執行、幂等。
 2. 來源是 repo 裡的真實檔案；腳本只負責寫到本機。
-3. 在這個 README 表格加一行，並把呼叫加進 `install.sh`。
-
-適合：Grok `~/.grok/rules`、User-level VS Code / Dev Container 預設、新環境檢查。
-
-不適合：某個產品的 build / Docker / 測試（那些寫在該專案 `AGENTS.md`）。
+3. 在 README 加一行，並把呼叫加進 `install.sh`。

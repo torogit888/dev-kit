@@ -7,10 +7,10 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 bash "$ROOT/grok/setup_grok_rules.sh"
 
-if command -v python3 >/dev/null 2>&1; then
-  PY=python3
-elif command -v python >/dev/null 2>&1; then
+if python -c "import sys" >/dev/null 2>&1; then
   PY=python
+elif python3 -c "import sys" >/dev/null 2>&1; then
+  PY=python3
 else
   echo "python not found; skip VS Code Dev Container defaults" >&2
   exit 1
