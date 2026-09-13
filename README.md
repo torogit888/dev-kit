@@ -1,72 +1,81 @@
 # dev-kit
 
 個人常用的開發 bootstrap：Grok 全域規則、VS Code / Dev Container 預設 extension 與 Python 編輯設定。
-新機器 clone 一次、跑 `install.sh`，之後每個新專案不必再抄同一套。
 
-## 新機器、新容器、新專案分別做什麼
+容器裡不要再 clone、也不要再跑 `install.sh`。設一次在主機的 VS Code User settings，之後每個 Dev Container 會自己把 extension 裝進去。
 
-### 1. 新機器（Windows / WSL / 另一台電腦）— 只做一次
+這台已經套用好了：你的 11 個 extension 和 Black / isort / flake8 / pytest 設定寫進了 VS Code User `settings.json`，Grok 規則寫進了 `~/.grok/rules/guidance-only.md`。
 
-主機要先有 VS Code 和 **Dev Containers** 擴充功能（`ms-vscode-remote.remote-containers`，裝在主機，不要裝進容器）。
+## 三種情況
 
-```bash
-git clone https://github.com/<YOU>/dev-kit.git
-cd dev-kit
-bash install.sh
-```
+### 新機器（只做一次）
 
-Windows PowerShell：
+主機要有 VS Code + **Dev Containers** 擴充功能（裝在主機，不要裝進容器）。
 
 ```powershell
+git clone https://github.com/<YOU>/dev-kit.git
+cd dev-kit
 & "C:\Program Files\Git\bin\bash.exe" .\install.sh
 ```
 
-這會寫入：
+### 新容器
 
-| 寫到哪 | 內容 |
-|--------|------|
-| `~/.grok/rules/guidance-only.md` | Grok 全域規則 |
-| VS Code **User** `settings.json` | `dev.containers.defaultExtensions` + Black / isort / flake8 / pytest 等 |
+1. 用 VS Code 打開專案
+2. Command Palette → **Dev Containers: Reopen in Container**
+3. 容器起來後，VS Code 會依 User 裡的 `dev.containers.defaultExtensions` 安裝那 11 個套件
 
-之後這台電腦開任何 Dev Container，VS Code 都會自動把這份 extension 清單裝進容器。編輯器設定（format on save、line length 120）跟著 User settings 進容器。
+已經在跑的舊容器看不到新清單：再跑一次 **Rebuild Container**。
 
-### 2. 新容器 — 不必在容器裡再跑 install
+### 新專案
 
-不要進容器再 clone / 再跑 `install.sh`。流程是：
-
-1. 主機已經跑過上面的 `install.sh`
-2. 用 VS Code 打開專案 → Command Palette → **Dev Containers: Reopen in Container**
-3. 容器建好後，VS Code 依 User 裡的 `dev.containers.defaultExtensions` 安裝 extension
-
-已在跑的舊容器看不到新清單：再跑一次 **Dev Containers: Rebuild Container**。
-
-容器裡的專案 `.devcontainer/devcontainer.json` **不必**再列那 11 個 extension。只留這個專案才有的東西（compose、port、interpreter）：
+`.devcontainer/devcontainer.json` 只留映像 / compose / port / interpreter，不要再貼 extension 清單。AIVideo 已改成這樣，只保留：
 
 ```json
-{
-  "name": "python-app",
-  "dockerComposeFile": ["../docker-compose.yml"],
-  "service": "pipeline",
-  "workspaceFolder": "/workspace",
-  "customizations": {
-    "vscode": {
-      "settings": {
-        "python.defaultInterpreterPath": "/usr/local/bin/python"
-      }
-    }
-  }
-}
+"python.defaultInterpreterPath": "/usr/local/bin/python"
 ```
 
-完整薄範本：[`templates/python-devcontainer.json`](templates/python-devcontainer.json)。
+同事或 Codespaces 沒裝 dev-kit 時，才把 `dev-kit/devcontainer/fragment.json` 貼進該專案。
 
-### 3. 新專案
+清單要改就改 `devcontainer/extensions.json` 和 `devcontainer/common-settings.json`，再跑一次 `install.sh`。另外加了 `flake8.args`（現在的 flake8 擴充功能讀這個；你原本的 `python.linting.*` 也留著）。
 
-1. 加一個薄的 `.devcontainer/devcontainer.json`（映像 / compose / port / interpreter）
-2. 不要複製 extension 清單
-3. Reopen in Container
+原理就一句話：**extension 是「這台機器裡的這個 VS Code 視窗」裝的，不是專案資料夾自帶的。** 主機和容器是兩台不同的環境，所以主機裝過 Python，容器裡預設還是空的。
 
-只有 **沒裝 dev-kit 的人**（同事、Codespaces）才需要把 [`devcontainer/fragment.json`](devcontainer/fragment.json) 貼進該專案的 `customizations.vscode`。
+## 兩層設定
+
+```
+你的電腦（主機）
+  VS Code User settings.json     ← install.sh 寫這裡，整台電腦一份
+    dev.containers.defaultExtensions = [那 11 個]
+    [python] / black / flake8 / isort ...
+
+某個專案
+  .devcontainer/devcontainer.json ← 只寫「這個專案的容器長怎樣」
+    映像、compose、port、interpreter
+```
+
+打開容器時，VS Code 做的是：
+
+1. 用專案的 `devcontainer.json` 起一個容器（Docker / compose）
+2. 在容器裡再裝一個 VS Code Server
+3. 讀你主機 User settings 裡的 `dev.containers.defaultExtensions`，往這個容器的 VS Code Server 裝那 11 個套件
+4. 編輯器設定（format on save、line length 120）跟著 User settings 進這個視窗
+
+所以不是「容器 clone 了 dev-kit」，也不是「每個專案複製一份 extensions」。是 **VS Code 連進容器時，把你的個人清單帶進去**。
+
+## 為什麼專案檔要薄
+
+| 寫在專案 `.devcontainer` | 寫在 User `defaultExtensions` |
+|--------------------------|-------------------------------|
+| 每個 repo 都要抄、會漂 | 設一次，之後每個容器都有 |
+| 同事也會被強迫裝你的 Grok / taskexpl | 只有你的 VS Code 會帶 |
+| 適合：映像、port、這個專案的 Python 路徑 | 適合：你個人一定要的套件和格式化習慣 |
+
+`python.defaultInterpreterPath` 仍放專案裡，因為每個容器的 Python 路徑可能不同；Black / flake8 則是你個人習慣，放 User 層。
+
+## 和「在容器裡跑 install.sh」的差別
+
+`install.sh` 是給新電腦用的：把清單寫進這台主機的 User settings。  
+容器每次重建都會是乾淨環境，靠步驟 3 自動再裝套件，不必進容器再設一次。
 
 ## 這份清單
 
@@ -79,9 +88,3 @@ Windows PowerShell：
 Python：pytest、Black / isort line length 120、flake8 max 120、存檔時 format + organize imports。
 
 `python.linting.*` 是舊鍵，仍寫入以相容；flake8 擴充功能實際讀的是 `flake8.args`。
-
-## 之後怎麼加 task
-
-1. 可重複執行、幂等。
-2. 來源是 repo 裡的真實檔案；腳本只負責寫到本機。
-3. 在 README 加一行，並把呼叫加進 `install.sh`。
