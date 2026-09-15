@@ -1,0 +1,42 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "AIVideo: 檢查環境 (aivideo check)",
+      "type": "shell",
+      "command": "aivideo check",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo check"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 執行測試生圖 (Gemini 16:9)",
+      "type": "shell",
+      "command": "aivideo check --gemini",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo check --gemini"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: pytest 單元測試",
+      "type": "shell",
+      "command": "pytest",
+      "windows": {
+        "command": "docker compose run --rm pipeline pytest"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -89,21 +89,21 @@ Python：pytest、Black / isort line length 120、flake8 max 120、存檔時 for
 
 `python.linting.*` 是舊鍵，仍寫入以相容；flake8 擴充功能實際讀的是 `flake8.args`。
 
-## 個人專屬 User Tasks
+## 個人專案專屬 Tasks（進 dev-kit git，不進目標專案 git）
 
-為了避免在個別專案（例如 AIVideo）的 Git 內塞入個人專屬快捷指令，常用的專案操作與開發任務由 `dev-kit` 統一管理，透過 `install.sh` 合併進主機 VS Code User `tasks.json`（依 `label` 自動去重合併，不覆蓋既有設定）：
+針對特定專案的個人開發快捷鍵（例如 AIVideo 的生圖與環境檢查），由 `dev-kit` 統一版控管理：
 
-- 來源定義：[vscode/tasks.json](vscode/tasks.json)
-- 合併腳本：[vscode/merge_user_tasks.py](vscode/merge_user_tasks.py)
-- 預設任務：
-  - `AIVideo: 檢查環境 (aivideo check)`
-  - `AIVideo: 執行測試生圖 (Gemini 16:9)`
-  - `AIVideo: pytest 單元測試`
-
-當以 VS Code 開啟專案或進入 Dev Container 時，User tasks 會自動出現在該視窗（透過 Task Explorer 或 Command Palette `Tasks: Run Task` 執行），並以 `${workspaceFolder}` 於當前視窗的容器終端執行。
+- 來源路徑：[projects/AIVideo/tasks.json](projects/AIVideo/tasks.json)（在 `dev-kit` 內版控）
+- 同步腳本：[vscode/sync_project_tasks.py](vscode/sync_project_tasks.py)
+- 當執行 `install.sh` 時，自動將定義派發至各專案的 `.vscode/tasks.json`，並自動寫入該專案的 `.git/info/exclude` 本地強制忽略。
+- **效果**：
+  1. 只有在開啟該專案時才看得見任務，其他專案不被干擾。
+  2. 換新電腦時，只要 clone `dev-kit` 跑 `install.sh` 即一鍵還原所有專案的專屬 tasks。
+  3. 目標專案的 Git 保持 100% 乾淨，完全不影響團隊成員。
 
 ## 主機環境輔助腳本
 
 放在 `tasks/` 目錄供主機新環境 bootstrap 使用：
 - [tasks/github-login.sh](tasks/github-login.sh)：主機 GitHub CLI 登入與 Git 憑證助手配置（`gh auth login` + `gh auth setup-git`）。
+
 

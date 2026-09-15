@@ -18,3 +18,4 @@ fi
 
 "$PY" "$ROOT/vscode/merge_user_settings.py"
 "$PY" "$ROOT/vscode/merge_user_tasks.py"
+"$PY" "$ROOT/vscode/sync_project_tasks.py"
