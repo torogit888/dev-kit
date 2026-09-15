@@ -17,3 +17,4 @@ else
 fi
 
 "$PY" "$ROOT/vscode/merge_user_settings.py"
+"$PY" "$ROOT/vscode/merge_user_tasks.py"

@@ -79,7 +79,7 @@ cd dev-kit
 
 ## 這份清單
 
-來源：[`devcontainer/extensions.json`](devcontainer/extensions.json) 與 [`devcontainer/common-settings.json`](devcontainer/common-settings.json)。要改就改這兩個檔，再跑一次 `install.sh`。
+來源：[devcontainer/extensions.json](devcontainer/extensions.json) 與 [devcontainer/common-settings.json](devcontainer/common-settings.json)。要改就改這兩個檔，再跑一次 `install.sh`。
 
 - Python、Pylance、Black、isort、flake8
 - YAML、Docker、Even Better TOML
@@ -88,3 +88,22 @@ cd dev-kit
 Python：pytest、Black / isort line length 120、flake8 max 120、存檔時 format + organize imports。
 
 `python.linting.*` 是舊鍵，仍寫入以相容；flake8 擴充功能實際讀的是 `flake8.args`。
+
+## 個人專屬 User Tasks
+
+為了避免在個別專案（例如 AIVideo）的 Git 內塞入個人專屬快捷指令，常用的專案操作與開發任務由 `dev-kit` 統一管理，透過 `install.sh` 合併進主機 VS Code User `tasks.json`（依 `label` 自動去重合併，不覆蓋既有設定）：
+
+- 來源定義：[vscode/tasks.json](vscode/tasks.json)
+- 合併腳本：[vscode/merge_user_tasks.py](vscode/merge_user_tasks.py)
+- 預設任務：
+  - `AIVideo: 檢查環境 (aivideo check)`
+  - `AIVideo: 執行測試生圖 (Gemini 16:9)`
+  - `AIVideo: pytest 單元測試`
+
+當以 VS Code 開啟專案或進入 Dev Container 時，User tasks 會自動出現在該視窗（透過 Task Explorer 或 Command Palette `Tasks: Run Task` 執行），並以 `${workspaceFolder}` 於當前視窗的容器終端執行。
+
+## 主機環境輔助腳本
+
+放在 `tasks/` 目錄供主機新環境 bootstrap 使用：
+- [tasks/github-login.sh](tasks/github-login.sh)：主機 GitHub CLI 登入與 Git 憑證助手配置（`gh auth login` + `gh auth setup-git`）。
+
