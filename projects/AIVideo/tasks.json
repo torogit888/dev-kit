@@ -1,5 +1,13 @@
 {
   "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "jobPath",
+      "type": "promptString",
+      "description": "請輸入 Job 目錄路徑：",
+      "default": "jobs/20260916_roman_telescope"
+    }
+  ],
   "tasks": [
     {
       "label": "AIVideo: 檢查環境 (aivideo check)",
@@ -20,6 +28,132 @@
       "windows": {
         "command": "docker compose run --rm pipeline python -m aivideo check --gemini"
       },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 批次生圖 (aivideo images)",
+      "type": "shell",
+      "command": "aivideo images --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo images --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 批次生成語音 (aivideo tts)",
+      "type": "shell",
+      "command": "aivideo tts --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo tts --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🔄 重新生成語音並合成影片 (TTS -> 成片 -> 預覽)",
+      "type": "shell",
+      "command": "aivideo tts --job ${input:jobPath} --force; aivideo compose --job ${input:jobPath}; aivideo preview --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo tts --job ${input:jobPath} --force; docker compose run --rm pipeline python -m aivideo compose --job ${input:jobPath}; docker compose run --rm pipeline python -m aivideo preview --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🎨 重新生圖並合成影片 (Images -> 成片 -> 預覽)",
+      "type": "shell",
+      "command": "aivideo images --job ${input:jobPath} --force; aivideo compose --job ${input:jobPath}; aivideo preview --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo images --job ${input:jobPath} --force; docker compose run --rm pipeline python -m aivideo compose --job ${input:jobPath}; docker compose run --rm pipeline python -m aivideo preview --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🚀 全流程重新生成 (生圖 + 語音 + 成片 + 預覽)",
+      "type": "shell",
+      "command": "aivideo images --job ${input:jobPath} --force; aivideo tts --job ${input:jobPath} --force; aivideo compose --job ${input:jobPath}; aivideo preview --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo images --job ${input:jobPath} --force; docker compose run --rm pipeline python -m aivideo tts --job ${input:jobPath} --force; docker compose run --rm pipeline python -m aivideo compose --job ${input:jobPath}; docker compose run --rm pipeline python -m aivideo preview --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 產生字幕檔 (aivideo srt)",
+      "type": "shell",
+      "command": "aivideo srt --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo srt --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 合成 1080p 影片 (aivideo compose)",
+      "type": "shell",
+      "command": "aivideo compose --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo compose --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 產生故事板預覽頁 (aivideo preview)",
+      "type": "shell",
+      "command": "aivideo preview --job ${input:jobPath}",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo preview --job ${input:jobPath}"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 列出音色角色庫 (aivideo voices)",
+      "type": "shell",
+      "command": "aivideo voices",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo voices"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 啟動 ComfyUI 服務 (GPU)",
+      "type": "shell",
+      "command": "docker compose --profile comfyui up -d comfyui",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 查看 ComfyUI 即時日誌",
+      "type": "shell",
+      "command": "docker compose logs -f comfyui",
       "options": {
         "cwd": "${workspaceFolder}"
       },
