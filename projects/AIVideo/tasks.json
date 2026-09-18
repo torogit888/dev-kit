@@ -10,6 +10,30 @@
   ],
   "tasks": [
     {
+      "label": "AIVideo: 🌐 啟動 Streamlit 說書人網頁控制台 (Port 8501)",
+      "type": "shell",
+      "command": "streamlit run aivideo/webui.py --server.port 8501 --server.address 0.0.0.0",
+      "windows": {
+        "command": "docker ps -q --filter 'publish=8501' | ForEach-Object { docker rm -f $_ }; docker compose run --rm -p 8501:8501 pipeline streamlit run aivideo/webui.py --server.port 8501 --server.address 0.0.0.0"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🛑 停止 Streamlit 網頁控制台 (釋放 8501 埠)",
+      "type": "shell",
+      "command": "docker ps -q --filter 'publish=8501' | xargs -r docker rm -f",
+      "windows": {
+        "command": "docker ps -q --filter 'publish=8501' | ForEach-Object { docker rm -f $_ }"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "AIVideo: 檢查環境 (aivideo check)",
       "type": "shell",
       "command": "aivideo check",
