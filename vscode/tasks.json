@@ -1,5 +1,21 @@
 {
   "version": "2.0.0",
-  "tasks": []
+  "tasks": [
+      {
+          "label": "dev-kit: 套用 Copilot 全域規則 (guidance-only)",
+          "type": "shell",
+          "command": "python \"${workspaceFolder}/../dev-kit/copilot/setup_copilot_rules.py\"",
+          "problemMatcher": []
+      },
+      {
+          "label": "dev-kit: 一鍵套用所有個人設定與規則 (install.sh)",
+          "type": "shell",
+          "command": "bash \"${workspaceFolder}/../dev-kit/install.sh\"",
+          "windows": {
+              "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' \"${workspaceFolder}/../dev-kit/install.sh\""
+          },
+          "problemMatcher": []
+      }
+  ]
 }
 

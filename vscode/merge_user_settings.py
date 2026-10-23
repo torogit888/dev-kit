@@ -38,7 +38,7 @@ def vscode_user_settings_path():
 def load_json(path, default):
     if not os.path.isfile(path):
         return default
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         text = f.read().strip()
     if not text:
         return default
@@ -100,8 +100,8 @@ def main():
             added_settings.append(key)
 
     tmp = settings_path + ".tmp"
-    with open(tmp, "w") as f:
-        json.dump(current, f, indent=4, sort_keys=False)
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(current, f, indent=4, sort_keys=False, ensure_ascii=False)
         f.write("\n")
     os.replace(tmp, settings_path)
 

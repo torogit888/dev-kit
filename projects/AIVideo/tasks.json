@@ -14,7 +14,7 @@
       "type": "shell",
       "command": "uvicorn aivideo.api.app:app --host 0.0.0.0 --port 8000 --reload",
       "windows": {
-        "command": "docker compose exec pipeline uvicorn aivideo.api.app:app --host 0.0.0.0 --port 8000 --reload"
+        "command": "docker compose up -d pipeline; docker compose restart -t 1 pipeline; docker compose exec pipeline uvicorn aivideo.api.app:app --host 0.0.0.0 --port 8000 --reload"
       },
       "options": {
         "cwd": "${workspaceFolder}"
@@ -193,6 +193,27 @@
         "cwd": "${workspaceFolder}"
       },
       "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "dev-kit: 套用 Copilot 全域規則 (guidance-only)",
+      "type": "shell",
+      "command": "python ../dev-kit/copilot/setup_copilot_rules.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "dev-kit: 一鍵套用所有個人設定與規則 (install.sh)",
+      "type": "shell",
+      "command": "bash ../dev-kit/install.sh",
+      "windows": {
+        "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' ../dev-kit/install.sh"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     }
   ]

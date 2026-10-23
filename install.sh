@@ -16,6 +16,7 @@ else
   exit 1
 fi
 
+"$PY" "$ROOT/copilot/setup_copilot_rules.py"
 "$PY" "$ROOT/vscode/merge_user_settings.py"
 "$PY" "$ROOT/vscode/merge_user_tasks.py"
 "$PY" "$ROOT/vscode/sync_project_tasks.py"

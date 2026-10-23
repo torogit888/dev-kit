@@ -1,10 +1,10 @@
 # dev-kit
 
-個人常用的開發 bootstrap：Grok 全域規則、VS Code / Dev Container 預設 extension 與 Python 編輯設定。
+個人常用的開發 bootstrap：Copilot & Grok 全域規則、VS Code / Dev Container 預設 extension 與 Python 編輯設定。
 
 容器裡不要再 clone、也不要再跑 `install.sh`。設一次在主機的 VS Code User settings，之後每個 Dev Container 會自己把 extension 裝進去。
 
-這台已經套用好了：你的 11 個 extension 和 Black / isort / flake8 / pytest 設定寫進了 VS Code User `settings.json`，Grok 規則寫進了 `~/.grok/rules/guidance-only.md`。
+這台已經套用好了：你的 11 個 extension 和 Black / isort / flake8 / pytest 設定寫進了 VS Code User `settings.json`，Grok 規則寫進了 `~/.grok/rules/guidance-only.md`，Copilot 全域規則（含重大變更前提供選項確認）寫進了 VS Code User `prompts/guidance-only.instructions.md` 與 `~/.copilot/copilot-instructions.md`。
 
 ## 三種情況
 
