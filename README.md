@@ -105,5 +105,6 @@ Python：pytest、Black / isort line length 120、flake8 max 120、存檔時 for
 
 放在 `tasks/` 目錄供主機新環境 bootstrap 使用：
 - [tasks/github-login.sh](tasks/github-login.sh)：主機 GitHub CLI 登入與 Git 憑證助手配置（`gh auth login` + `gh auth setup-git`）。
+- [tasks/install-antigravity-sdk.sh](tasks/install-antigravity-sdk.sh)：安裝或更新官方 Google Antigravity Python SDK（`google-antigravity`），自動偵測並裝入容器或本機環境。
 
 

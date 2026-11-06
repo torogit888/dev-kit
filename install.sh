@@ -6,6 +6,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 bash "$ROOT/grok/setup_grok_rules.sh"
+bash "$ROOT/antigravity/setup_antigravity_rules.sh"
 
 if python -c "import sys" >/dev/null 2>&1; then
   PY=python

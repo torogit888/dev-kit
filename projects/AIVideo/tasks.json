@@ -6,9 +6,139 @@
       "type": "promptString",
       "description": "請輸入 Job 目錄路徑：",
       "default": "jobs/20260916_roman_telescope"
+    },
+    {
+      "id": "customPrompt",
+      "type": "promptString",
+      "description": "請輸入正面提示詞 (Positive Prompt)：",
+      "default": "電影感靜幀，16:9 橫式構圖，雨夜街道，地面反光，一盞暖色路燈，膠片顆粒"
+    },
+    {
+      "id": "customNegativePrompt",
+      "type": "promptString",
+      "description": "請輸入負面提示詞 (Negative Prompt，不需可留空)：",
+      "default": "low quality, bad anatomy, bad hands, text, words, watermark, logo, split screen, blurry, deformed"
+    },
+    {
+      "id": "customRefImage",
+      "type": "promptString",
+      "description": "請輸入參考圖路徑 (若為純文生圖請直接按 Enter 略過)：",
+      "default": ""
+    },
+    {
+      "id": "customDenoise",
+      "type": "promptString",
+      "description": "參考圖重繪強度 Denoise (0.1~1.0，預設 0.75，有參考圖時生效)：",
+      "default": "0.75"
+    },
+    {
+      "id": "structuredPrefix",
+      "type": "promptString",
+      "description": "【前置提示詞】風格、畫風、品質基底 (例如: masterpiece, best quality, 2D anime illustration, clean line art)：",
+      "default": "(masterpiece, best quality:1.2), 2D cartoon illustration, anime art style, chibi characters, clean line art, cell shading, flat colors"
+    },
+    {
+      "id": "structuredSubject",
+      "type": "promptString",
+      "description": "【主體提示詞】核心主體、人物外觀、動作與場景中心：",
+      "default": "close-up group reaction shot of stylized chibi intellectuals and campers, eyes wide with astonishment and mouths agape as they listen in stunned silence"
+    },
+    {
+      "id": "structuredSuffix",
+      "type": "promptString",
+      "description": "【後置提示詞】構圖、光影、氛圍、視角與細節 (例如: 16:9 widescreen, cinematic lighting, campfire glow)：",
+      "default": "campfire glow reflecting on faces against dark Russian pine forest, vibrant contrasting color palette, 16:9 widescreen composition, highly detailed background"
+    },
+    {
+      "id": "structuredNegative",
+      "type": "promptString",
+      "description": "【負面提示詞】想排除的元素 (例如: low quality, blurry, text, watermark, split screen)：",
+      "default": "low quality, bad anatomy, bad hands, text, words, watermark, logo, split screen, blurry, deformed"
+    },
+    {
+      "id": "customLora",
+      "type": "promptString",
+      "description": "【LoRA 模型檔名】(留空或填 None 則不使用 LoRA，檔案需位於 ComfyUI models/loras/ 目錄)：",
+      "default": ""
+    },
+    {
+      "id": "customLoraStrength",
+      "type": "promptString",
+      "description": "【LoRA 作用權重】強度 (0.1 ~ 2.0，預設 1.0)：",
+      "default": "1.0"
+    },
+    {
+      "id": "illustriousPrompt",
+      "type": "promptString",
+      "description": "【Illustrious-XL 正面提示詞】(若掛載 Chibi LoRA 會自動注入 chibi_style)：",
+      "default": "1girl, cute chibi, smiling, blue eyes, dynamic pink twintails, sailor uniform, holding kitten, masterpiece, best quality"
+    },
+    {
+      "id": "illustriousLora",
+      "type": "promptString",
+      "description": "【Illustrious-XL LoRA 檔名】(檔案需位於 ComfyUI models/loras/，留空則純底模生圖)：",
+      "default": "tekjin01929_Chibi_Style_Illust.safetensors"
+    },
+    {
+      "id": "illustriousNegative",
+      "type": "promptString",
+      "description": "【Illustrious-XL 負面提示詞】：",
+      "default": "worst quality, low quality, bad anatomy, bad hands, blurry, text, watermark, signature"
+    },
+    {
+      "id": "optimizerTargetImage",
+      "type": "promptString",
+      "description": "【目標對齊圖片】(Target Image 路徑)：",
+      "default": "jobs/20261023_Michelin/characters/andre_michelin.png"
+    },
+    {
+      "id": "optimizerInitialPrompt",
+      "type": "promptString",
+      "description": "【初始正面提示詞】(Initial Positive Prompt，留空則使用預設立繪模板)：",
+      "default": "(masterpiece, best quality:1.2), 2D cartoon illustration, anime art style, chibi characters, clean line art, cell shading, flat colors, Character reference sheet, SINGLE character only, full-body standing pose, clear face, distinct hair, body proportions and signature outfit colors, no other characters, no collage, no extra props, no text, no labels, no watermarks, 安德烈米其林 (André Michelin): A historical figure depicted in Q版 (chibi) style. His face is round and expressive, with a neat, small mustache and a thoughtful or determined expression. He has a sturdy, slightly portly build, reflecting a businessman of the early 20th century, all in chibi proportions. Dressed in era-appropriate European business attire, such as a dark, well-fitted suit, white shirt, and tie. Clothing is simplified with clear, crisp outlines and smooth cel-shading, lacking intricate fabric patterns., clean minimalist neutral background, soft even lighting, 16:9 widescreen composition"
+    },
+    {
+      "id": "optimizerNegativePrompt",
+      "type": "promptString",
+      "description": "【初始負面提示詞】(Initial Negative Prompt)：",
+      "default": "(worst quality, low quality:1.4), rough lines, messy sketch, blur, deformed, bad anatomy, bad proportions, missing fingers, extra digits, signature, watermark, text, words, Chinese characters, subtitles, logos"
+    },
+    {
+      "id": "optimizerMaxIterations",
+      "type": "promptString",
+      "description": "【最大迭代輪數】(每輪生成後自動由 Vision AI 評分與微調 Prompt)：",
+      "default": "5"
+    },
+    {
+      "id": "optimizerTargetScore",
+      "type": "promptString",
+      "description": "【目標相似度百分比】(達成即提前停止，例如 99)：",
+      "default": "99"
+    },
+    {
+      "id": "optimizerRefImage",
+      "type": "promptString",
+      "description": "【可選圖生圖參考圖】(若要純文生圖逼近請直接按 Enter 留空)：",
+      "default": ""
+    },
+    {
+      "id": "optimizerDenoise",
+      "type": "promptString",
+      "description": "【可選重繪強度 Denoise】(0.1~1.0，預設 0.75，有參考圖時生效)：",
+      "default": "0.75"
     }
   ],
   "tasks": [
+    {
+      "label": "AIVideo: 啟動 Antigravity CLI Bridge (Pro 免費生圖 :8099)",
+      "type": "shell",
+      "command": "python -u \"${workspaceFolder}/scripts/agy_bridge.py\"",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
     {
       "label": "Studio: 啟動 API (uvicorn :8000)",
       "type": "shell",
@@ -47,9 +177,187 @@
     {
       "label": "AIVideo: 執行測試生圖 (Gemini 16:9)",
       "type": "shell",
-      "command": "aivideo check --gemini",
+      "command": "aivideo check --gemini && code -r jobs/_smoke/gemini_16x9.png",
       "windows": {
-        "command": "docker compose run --rm pipeline python -m aivideo check --gemini"
+        "command": "docker compose run --rm pipeline python -m aivideo check --gemini; if (Test-Path jobs/_smoke/gemini_16x9.png) { code -r jobs/_smoke/gemini_16x9.png }"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 執行測試生圖 (ComfyUI Z-Image Turbo 16:9 - 煙霧測試)",
+      "type": "shell",
+      "command": "aivideo check --comfy-image && code -r jobs/_smoke/comfyui_z_image_turbo_16x9.png",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo check --comfy-image; if (Test-Path jobs/_smoke/comfyui_z_image_turbo_16x9.png) { code -r jobs/_smoke/comfyui_z_image_turbo_16x9.png }"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🎨 自訂測試生圖 (ComfyUI Z-Image Turbo - 輸入正向+負面提示詞 與參考圖)",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-u",
+        "scripts/test_custom_image.py",
+        "--prompt",
+        "${input:customPrompt}",
+        "--negative-prompt",
+        "${input:customNegativePrompt}",
+        "--ref-image",
+        "${input:customRefImage}",
+        "--denoise",
+        "${input:customDenoise}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🎯 自動化最佳化 Prompt (迭代逼近目標圖片至 99%)",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-u",
+        "scripts/optimize_prompt.py",
+        "--target-image",
+        "${input:optimizerTargetImage}",
+        "--prompt",
+        "${input:optimizerInitialPrompt}",
+        "--negative-prompt",
+        "${input:optimizerNegativePrompt}",
+        "--max-iterations",
+        "${input:optimizerMaxIterations}",
+        "--target-score",
+        "${input:optimizerTargetScore}",
+        "--ref-image",
+        "${input:optimizerRefImage}",
+        "--denoise",
+        "${input:optimizerDenoise}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🧩 結構化生圖 (前置 + 主體 + 後置 + 負面提示詞)",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-u",
+        "scripts/test_custom_image.py",
+        "--prefix",
+        "${input:structuredPrefix}",
+        "--prompt",
+        "${input:structuredSubject}",
+        "--suffix",
+        "${input:structuredSuffix}",
+        "--negative-prompt",
+        "${input:structuredNegative}",
+        "--ref-image",
+        "${input:customRefImage}",
+        "--denoise",
+        "${input:customDenoise}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🎨 結構化生圖 (含 LoRA 風格選擇)",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-u",
+        "scripts/test_custom_image.py",
+        "--prefix",
+        "${input:structuredPrefix}",
+        "--prompt",
+        "${input:structuredSubject}",
+        "--suffix",
+        "${input:structuredSuffix}",
+        "--negative-prompt",
+        "${input:structuredNegative}",
+        "--lora",
+        "${input:customLora}",
+        "--lora-strength",
+        "${input:customLoraStrength}",
+        "--ref-image",
+        "${input:customRefImage}",
+        "--denoise",
+        "${input:customDenoise}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 🌸 Illustrious-XL 生圖 (支援 Civitai 二次元 LoRA)",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-u",
+        "scripts/test_custom_image.py",
+        "--engine",
+        "illustrious",
+        "--prompt",
+        "${input:illustriousPrompt}",
+        "--negative-prompt",
+        "${input:illustriousNegative}",
+        "--lora",
+        "${input:illustriousLora}",
+        "--lora-strength",
+        "${input:customLoraStrength}",
+        "--ref-image",
+        "${input:customRefImage}",
+        "--denoise",
+        "${input:customDenoise}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 下載 Illustrious-XL 底模與 Chibi LoRA (~3.9GB)",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-u",
+        "scripts/download_illustrious_models.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 下載 Z-Image Turbo 官方模型檔案 (~20GB)",
+      "type": "shell",
+      "command": "bash ../dev-kit/tasks/download-zimage-models.sh",
+      "windows": {
+        "command": "powershell -ExecutionPolicy Bypass -File ../dev-kit/tasks/download-zimage-models.ps1"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "AIVideo: 批次生圖 (ComfyUI Z-Image Turbo)",
+      "type": "shell",
+      "command": "aivideo images --job ${input:jobPath} --model comfyui:z-image-turbo",
+      "windows": {
+        "command": "docker compose run --rm pipeline python -m aivideo images --job ${input:jobPath} --model comfyui:z-image-turbo"
       },
       "options": {
         "cwd": "${workspaceFolder}"
@@ -193,6 +501,18 @@
         "cwd": "${workspaceFolder}"
       },
       "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "dev-kit: 安裝官方 google-antigravity SDK",
+      "type": "shell",
+      "command": "bash ../dev-kit/tasks/install-antigravity-sdk.sh",
+      "windows": {
+        "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' ../dev-kit/tasks/install-antigravity-sdk.sh"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     },
     {

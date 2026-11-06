@@ -94,8 +94,13 @@ def main():
     current["dev.containers.defaultExtensions"] = merged
 
     added_settings = []
+    force_keys = {
+        "telemetry.telemetryLevel",
+        "antigravity.telemetry.enabled",
+        "geminicodeassist.enableTelemetry",
+    }
     for key, value in patch.items():
-        if key not in current:
+        if key not in current or (key in force_keys and current.get(key) != value):
             current[key] = value
             added_settings.append(key)
 

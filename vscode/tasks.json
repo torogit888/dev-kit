@@ -8,6 +8,33 @@
           "problemMatcher": []
       },
       {
+          "label": "dev-kit: 套用 Grok 全域規則 (guidance-only)",
+          "type": "shell",
+          "command": "bash \"${workspaceFolder}/../dev-kit/grok/setup_grok_rules.sh\"",
+          "windows": {
+              "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' \"${workspaceFolder}/../dev-kit/grok/setup_grok_rules.sh\""
+          },
+          "problemMatcher": []
+      },
+      {
+          "label": "dev-kit: 套用 Antigravity 全域規則 (guidance-only)",
+          "type": "shell",
+          "command": "python \"${workspaceFolder}/../dev-kit/antigravity/setup_antigravity_rules.py\"",
+          "windows": {
+              "command": "python \"${workspaceFolder}/../dev-kit/antigravity/setup_antigravity_rules.py\""
+          },
+          "problemMatcher": []
+      },
+      {
+          "label": "dev-kit: 安裝官方 google-antigravity SDK",
+          "type": "shell",
+          "command": "bash \"${workspaceFolder}/../dev-kit/tasks/install-antigravity-sdk.sh\"",
+          "windows": {
+              "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' \"${workspaceFolder}/../dev-kit/tasks/install-antigravity-sdk.sh\""
+          },
+          "problemMatcher": []
+      },
+      {
           "label": "dev-kit: 一鍵套用所有個人設定與規則 (install.sh)",
           "type": "shell",
           "command": "bash \"${workspaceFolder}/../dev-kit/install.sh\"",
@@ -18,4 +45,3 @@
       }
   ]
 }
-
